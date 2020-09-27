@@ -16,7 +16,7 @@ parameters:
     type: string
     label: Image name or ID
     description: Image to be used for compute instance
-    default: 40e1794e-6471-4c9b-9327-2b762ca0c135
+    default: Ubuntu 18.04
 
   flavor:
     type: string
@@ -28,7 +28,7 @@ parameters:
     type: string
     label: Key name
     description: Name of key-pair to be used for compute instance
-    default: id_rsa
+    default: Egemen-SSH 
 
   public_network:
     type: string
