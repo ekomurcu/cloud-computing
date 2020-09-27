@@ -40,16 +40,16 @@ else:
 
 #print("Path at terminal when executing this file")
 #print(os.getcwd() + "\n")
-cfg_file_path =  os.getcwd()+'/cloud-cfg.txt'
+cfg_file_path =  os.getcwd()+'/docker-cfg.txt'
 if os.path.isfile(cfg_file_path):
     userdata = open(cfg_file_path)
 else:
-    sys.exit("cloud-cfg.txt is not in current working directory")
+    sys.exit("docker-cfg.txt is not in current working directory")
 
 secgroups = ['Ego_C2']
 
 print ("Creating instance ... ")
-instance = nova.servers.create(name="Ego_Csaas", image=image, flavor=flavor, userdata=userdata, nics=nics,security_groups=secgroups, key_name="Egemen-SSH")
+instance = nova.servers.create(name="Ego_Docker", image=image, flavor=flavor, userdata=userdata, nics=nics,security_groups=secgroups, key_name="Egemen-SSH")
 inst_status = instance.status
 print ("waiting for 10 seconds.. ")
 time.sleep(10)
