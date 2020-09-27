@@ -2,7 +2,10 @@
 
 apt_update: true
 apt_upgrade: true
-
+packages:
+ - python3-pip
+ - python3-dev
+ - build-essential
 byobu_default: system 
 
 runcmd:
