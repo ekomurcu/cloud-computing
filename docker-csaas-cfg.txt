@@ -24,15 +24,21 @@ write_files:
       EXPOSE 5000
       ENV PATH="${PATH}:/usr/games/"
       CMD ["python3","app.py"]
+      
+   - path: /etc/docker/daemon.json
+   content: |
+     {
+     "mtu": 1400
+     }
+
     
 runcmd:
  - echo "export PATH=$PATH:/usr/games" >> /home/ubuntu/.bashrc  
  - source /home/ubuntu/.bashrc
- - sudo bash
- - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
- - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
- - apt-get install -y docker-ce
- - apt-get install -y git
- - cd container
+ - sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+ - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+ - sudo apt-get install -y docker-ce
+ - sudo apt-get install -y git
+ - sudo service docker restart
  - docker build --no-cache -t cowsay:latest .
  - docker run -it cowsay
