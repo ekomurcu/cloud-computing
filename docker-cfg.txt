@@ -6,23 +6,6 @@ packages:
  - build-essential
 byobu_default: system 
 
-write_files:  
-- path: /home/ubuntu/Dockerfile  
-   content: |  
-    FROM ubuntu  
-    RUN apt-get -y update &&\  
-        apt-get -y upgrade &&\  
-        apt-get install -y --force-yes git &&\  
-        apt-get clean  
-    RUN apt-get install -y python3-pip  
-    RUN pip3 install --upgrade pip  
-    RUN pip3 install flask  
-    RUN pip3 install cowsay  
-    RUN git clone https://github.com/TDB-UU/csaas.git  
-    WORKDIR /csaas/cowsay  
-    EXPOSE 5000  
-    ENV PATH="${PATH}:/usr/games/"  
-    CMD ["python3","app.py"]  
     
 runcmd:
  - echo "export PATH=$PATH:/usr/games" >> /home/ubuntu/.bashrc  
@@ -32,5 +15,6 @@ runcmd:
  - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
  - apt-get install -y docker-ce
  - apt-get install -y git
+ - cd container
  - docker build --no-cache -t cowsay:latest .
  - docker run -it cowsay
