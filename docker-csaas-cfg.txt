@@ -40,5 +40,5 @@ runcmd:
  - sudo apt-get install -y docker-ce
  - sudo apt-get install -y git
  - sudo service docker restart
- - docker build --no-cache -t cowsay:latest .
- - docker run -it cowsay
+ - sudo docker build --no-cache -t cowsay:latest .
+ - sudo docker run -it cowsay
