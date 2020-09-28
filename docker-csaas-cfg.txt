@@ -1,1 +1,38 @@
-dsas
+#cloud-config
+
+apt_update: true
+apt_upgrade: true
+packages:
+ - python3-pip
+ - python3-dev
+ - build-essential
+byobu_default: system 
+
+write_files:
+  - path: /home/ubuntu/Dockerfile
+    content: |
+      FROM ubuntu
+      RUN apt-get update
+      RUN apt-get -y upgrade 
+      RUN apt-get install -y git
+      RUN apt-get install -y python3-pip
+      RUN pip3 install --upgrade pip
+      RUN pip3 install flask
+      RUN apt-get install -y cowsay
+      RUN git clone https://github.com/TDB-UU/csaas.git 
+      WORKDIR /csaas/cowsay
+      EXPOSE 5000
+      ENV PATH="${PATH}:/usr/games/"
+      CMD ["python3","app.py"]
+    
+runcmd:
+ - echo "export PATH=$PATH:/usr/games" >> /home/ubuntu/.bashrc  
+ - source /home/ubuntu/.bashrc
+ - sudo bash
+ - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+ - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+ - apt-get install -y docker-ce
+ - apt-get install -y git
+ - cd container
+ - docker build --no-cache -t cowsay:latest .
+ - docker run -it cowsay
