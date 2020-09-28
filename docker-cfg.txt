@@ -3,17 +3,12 @@
 apt_update: true
 apt_upgrade: true
 packages:
- - python3-pip
- - python3-dev
  - build-essential
 byobu_default: system 
 
 runcmd:
  - echo "export PATH=$PATH:/usr/games" >> /home/ubuntu/.bashrc  
  - source /home/ubuntu/.bashrc
- - pip3 install Flask
- - pip3 install cowsay
- - git clone https://github.com/TDB-UU/csaas.git 
  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
  - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
  - apt-get install -y docker-ce
