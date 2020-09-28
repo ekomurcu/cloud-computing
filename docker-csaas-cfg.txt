@@ -24,11 +24,11 @@ write_files:
       EXPOSE 5000
       ENV PATH="${PATH}:/usr/games/"
       CMD ["python3","app.py"]
-      
+            
   - path: /etc/docker/daemon.json
     content: |
       {
-       "mtu": 1400
+      "mtu": 1400
       }
 
     
