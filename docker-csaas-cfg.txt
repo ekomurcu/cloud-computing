@@ -26,10 +26,10 @@ write_files:
       CMD ["python3","app.py"]
       
   - path: /etc/docker/daemon.json
-   content: |
-     {
-     "mtu": 1400
-     }
+    content: |
+      {
+       "mtu": 1400
+      }
 
     
 runcmd:
