@@ -14,6 +14,5 @@ runcmd:
  - apt-get install -y docker-ce
  - systemctl status docker
  - apt-get install -y git
- - cd container
  - docker build --no-cache -t cowsay:latest .
  - docker run -it cowsay
