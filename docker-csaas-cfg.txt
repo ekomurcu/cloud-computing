@@ -25,7 +25,7 @@ write_files:
       ENV PATH="${PATH}:/usr/games/"
       CMD ["python3","app.py"]
       
-   - path: /etc/docker/daemon.json
+  - path: /etc/docker/daemon.json
    content: |
      {
      "mtu": 1400
