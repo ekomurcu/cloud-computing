@@ -14,7 +14,7 @@ runcmd:
  - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
  - apt-get install -y docker-ce
  - systemctl status docker
- - cd container
  - apt-get install -y git
+ - cd container
  - docker build --no-cache -t cowsay:latest .
  - docker run -it cowsay
