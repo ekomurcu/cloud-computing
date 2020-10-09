@@ -38,10 +38,10 @@ parameters:
 
 # Resource allocation
 resources:
-  cluster_sg:
+  celery_cluster:
     type: OS::Neutron::SecurityGroup
     properties:
-      name: cluster_sg
+      name: celery_cluster
       rules:
         - protocol: icmp
         - protocol: tcp
@@ -74,20 +74,20 @@ resources:
       router_id: { get_resource: router }
       subnet: { get_resource: private_subnet }
 
-  instance_port0:
+  worker1_port:
     type: OS::Neutron::Port
     properties:
       network: { get_resource: private_network }
       security_groups:
-        - { get_resource: cluster_sg }
-  instance_port1:
+        - { get_resource: celery_cluster }
+  worker2_port:
     type: OS::Neutron::Port
     properties:
       network: { get_resource: private_network }
       security_groups:
-        - { get_resource: cluster_sg }
+        - { get_resource: celery_cluster }
  
-  my_instance0:
+  worker1:
     type: OS::Nova::Server
     properties:
       image: { get_param: image }
@@ -96,7 +96,7 @@ resources:
       #security_groups:
       #  - { get_resource: cluster_sg }
       networks:
-        - port: { get_resource: instance_port0 }         
+        - port: { get_resource: worker1_port }         
       user_data: |
         #!/bin/sh
         echo "Hello, World!"
@@ -107,7 +107,7 @@ resources:
         apt-get install -y ansible
       user_data_format: RAW
 
-  my_instance1:
+  worker2:
     type: OS::Nova::Server
     properties:
       image: { get_param: image }
@@ -116,7 +116,7 @@ resources:
       #security_groups:
       #  - { get_resource: cluster_sg }
       networks:
-        - port: { get_resource: instance_port1 }
+        - port: { get_resource: worker2_port }
       user_data: |
         #!/bin/sh
         echo "Hello, World!"
@@ -135,13 +135,13 @@ resources:
     type: OS::Neutron::FloatingIPAssociation
     properties:
       floatingip_id: { get_resource: floating_ip }
-      port_id: { get_resource: instance_port0 } 
+      port_id: { get_resource: worker1_port } 
 
 # Output in case of successful booting
 outputs:
   instance_name:
     description: Name of the instance
-    value: { get_attr: [my_instance0, name] }
+    value: { get_attr: [worker1, name] }
   instance_ip:
     description: IP address of the instance
-    value: { get_attr: [my_instance0, first_address, floating_ip, floating_ip_address] }
+    value: { get_attr: [worker1, first_address, floating_ip, floating_ip_address] }
