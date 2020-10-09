@@ -1,6 +1,6 @@
 from celery import Celery
 
-app = Celery('tasks', backend='rpc://', broker='pyamqp://guest@localhost//')
+app = Celery('pronouns', backend='rpc://', broker='pyamqp://guest@localhost//')
 
 @app.task
 def pronoun_count_per_unique_tweet(filename, counts, count):
@@ -10,7 +10,7 @@ def pronoun_count_per_unique_tweet(filename, counts, count):
 
     pronouns=["han","hon", "den", "det", "denna", "denne", "hen"]
    
-    f = open(file, "r")
+    f = open(filename, "r")
     #for line in sys.stdin:
     for line in f.readlines():
          # remove ending character 
@@ -43,9 +43,22 @@ def pronoun_count_per_unique_tweet(filename, counts, count):
                     occurred.append(word.lower())
                     #print ('%s\t%s' % (word.lower(), 1))
                     counts[word.lower()]+=1
-    print('%s\t%s' % ("count", count)) 
+    #print('%s\t%s' % ("count", count)) 
 
     #for pronoun in pronouns:
     #    counts[pronoun]=counts[pronoun]/count
-    print(counts)
+    #print(counts)
+    #return (counts, count)
+    return counts,count
+
+@app.task
+def all_pronoun_counts(directory_path):
+    import os
+    count=0
+    counts={"han":0,"hon":0, "den":0, "det":0, "denna":0, "denne":0, "hen":0 }
+    for each in os.listdir(directory_path):
+        counts, count = pronoun_count_per_unique_tweet(directory_path+ each, counts, count)
+    for pronoun in counts.keys():
+        counts[pronoun]= counts[pronoun]/float(count)
+
     return counts, count
