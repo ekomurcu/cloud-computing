@@ -1,9 +1,9 @@
 from celery import Celery
 
-app = Celery('pronouns', backend='rpc://', broker='pyamqp://guest@localhost//')
+app = Celery('pronouns', backend='rpc://', broker='amqp://ekomurcu:Bjk1995030507@192.168.2.122:5672/192.168.2.122')
 
 @app.task
-def pronoun_count_per_unique_tweet(filename, counts, count):
+def pronoun_count_per_unique_tweet(filename, counts):
     import re
     import sys
     import json
@@ -27,7 +27,7 @@ def pronoun_count_per_unique_tweet(filename, counts, count):
             dictwit['retweeted_status']
         except KeyError:
 
-            count+=1
+            counts["count"]+=1
             occurred=[]
             #remove comma, colon, dot, etc. with spaces via regex
             dictwit["text"]=re.sub("[':?;,/[.!\"(){}]", " ", dictwit["text"])
@@ -49,16 +49,15 @@ def pronoun_count_per_unique_tweet(filename, counts, count):
     #    counts[pronoun]=counts[pronoun]/count
     #print(counts)
     #return (counts, count)
-    return counts,count
+    return counts
 
 @app.task
 def all_pronoun_counts(directory_path):
     import os
-    count=0
-    counts={"han":0,"hon":0, "den":0, "det":0, "denna":0, "denne":0, "hen":0 }
+    counts={"han":0,"hon":0, "den":0, "det":0, "denna":0, "denne":0, "hen":0, "count":0 }
     for each in os.listdir(directory_path):
-        counts, count = pronoun_count_per_unique_tweet(directory_path+ each, counts, count)
+        counts= pronoun_count_per_unique_tweet(directory_path+ each, counts)
     for pronoun in counts.keys():
-        counts[pronoun]= counts[pronoun]/float(count)
+        counts[pronoun]= counts[pronoun]/float(counts["count"])
 
-    return counts, count
+    return counts
