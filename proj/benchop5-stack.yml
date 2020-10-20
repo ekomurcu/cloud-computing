@@ -38,7 +38,7 @@ parameters:
 
 # Resource allocation
 resources:
-   benchop_cluster:
+  benchop_cluster:
     type: OS::Neutron::SecurityGroup
     properties:
       name: benchop_cluster
@@ -80,6 +80,13 @@ resources:
       network: { get_resource: private_network }
       security_groups:
         - { get_resource: benchop_cluster }
+  
+  worker2_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: private_network }
+      security_groups:
+        - { get_resource: benchop_cluster }
   worker3_port:
     type: OS::Neutron::Port
     properties:
@@ -112,8 +119,8 @@ resources:
       image: { get_param: image }
       flavor: { get_param: flavor }
       key_name: { get_param: key }
-      security_groups:
-        - { get_resource: benchop_cluster }
+      #security_groups:
+      #  - { get_resource: benchop_cluster }
       networks:
         - port: { get_resource: worker1_port }         
       user_data: |
@@ -131,8 +138,8 @@ resources:
       image: { get_param: image }
       flavor: { get_param: flavor }
       key_name: { get_param: key }
-      security_groups:
-        - { get_resource: benchop_cluster }
+      #security_groups:
+      #  - { get_resource: benchop_cluster }
       networks:
         - port: { get_resource: worker2_port }
       user_data: |
@@ -149,8 +156,8 @@ resources:
       image: { get_param: image }
       flavor: { get_param: flavor }
       key_name: { get_param: key }
-      security_groups:
-        - { get_resource: benchop_cluster }
+      #security_groups:
+      #  - { get_resource: benchop_cluster }
       networks:
         - port: { get_resource: worker3_port }         
       user_data: |
@@ -169,8 +176,8 @@ resources:
       image: { get_param: image }
       flavor: { get_param: flavor }
       key_name: { get_param: key }
-      security_groups:
-        - { get_resource: benchop_cluster }
+      #security_groups:
+      #  - { get_resource: benchop_cluster }
       networks:
         - port: { get_resource: worker4_port }
       user_data: |
@@ -187,8 +194,8 @@ resources:
       image: { get_param: image }
       flavor: { get_param: flavor }
       key_name: { get_param: key }
-      security_groups:
-        - { get_resource: benchop_cluster }
+      #security_groups:
+      #  - { get_resource: benchop_cluster }
       networks:
         - port: { get_resource: worker5_port }         
       user_data: |
@@ -207,8 +214,8 @@ resources:
       image: { get_param: image }
       flavor: { get_param: flavor }
       key_name: { get_param: key }
-      security_groups:
-        - { get_resource: benchop_cluster }
+      #security_groups:
+      #  - { get_resource: benchop_cluster }
       networks:
         - port: { get_resource: worker6_port }
       user_data: |
