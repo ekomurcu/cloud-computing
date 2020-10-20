@@ -80,7 +80,25 @@ resources:
       network: { get_resource: private_network }
       security_groups:
         - { get_resource: benchop_cluster }
-  worker2_port:
+  worker3_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: private_network }
+      security_groups:
+        - { get_resource: benchop_cluster }
+  worker4_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: private_network }
+      security_groups:
+        - { get_resource: benchop_cluster }
+  worker5_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: private_network }
+      security_groups:
+        - { get_resource: benchop_cluster }
+  worker6_port:
     type: OS::Neutron::Port
     properties:
       network: { get_resource: private_network }
@@ -93,8 +111,8 @@ resources:
       image: { get_param: image }
       flavor: { get_param: flavor }
       key_name: { get_param: key }
-      #security_groups:
-      #  - { get_resource: cluster_sg }
+      security_groups:
+        - { get_resource: benchop_cluster }
       networks:
         - port: { get_resource: worker1_port }         
       user_data: |
@@ -107,14 +125,14 @@ resources:
         apt-get install -y ansible
       user_data_format: RAW
 
-  worker2:
+   worker2:
     type: OS::Nova::Server
     properties:
       image: { get_param: image }
       flavor: { get_param: flavor }
       key_name: { get_param: key }
-      #security_groups:
-      #  - { get_resource: cluster_sg }
+      security_groups:
+        - { get_resource: benchop_cluster }
       networks:
         - port: { get_resource: worker2_port }
       user_data: |
@@ -124,8 +142,83 @@ resources:
         apt-get update -y
         apt-get upgrade -y
       user_data_format: RAW
+      
+   worker3:
+    type: OS::Nova::Server
+    properties:
+      image: { get_param: image }
+      flavor: { get_param: flavor }
+      key_name: { get_param: key }
+      security_groups:
+        - { get_resource: benchop_cluster }
+      networks:
+        - port: { get_resource: worker3_port }         
+      user_data: |
+        #!/bin/sh
+        echo "Hello, World!"
+        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDeMYrGrjWNkiP8DHv438IAZPS5t1/NssLnYr4MC6aBui5hAWgqHndTomBwJcR9V4dT27wOrrFFI7RSq/g/zyhUcJ+IT2jRXJ0R5/S+hQ8ELLJEQA7HO2ZMVQSeP2T7VJoypZowB/IhdMmbGjjObLGpT88tpZyl4OL1Ofx1xkNFcjQmaU/zkl0BAEVXocQ/I7CeVloqPQ8bjcV2R1ITvaA4az10t/TqOn58oA72/nuCsih/PPLGU6UqYjcgzRGaW0qJ7SwCFZndlU7TL/aC08psE2etAWAAsSlSich5qN6PxuigmzcKMvqAY35cG/tUhswdOsTpdvy5LSN46ijU161Z" >> /home/ubuntu/.ssh/authorized_keys
+        apt-add-repository -y ppa:ansible/ansible
+        apt-get update -y
+        apt-get upgrade -y
+        apt-get install -y ansible
+      user_data_format: RAW
 
+   worker4:
+    type: OS::Nova::Server
+    properties:
+      image: { get_param: image }
+      flavor: { get_param: flavor }
+      key_name: { get_param: key }
+      security_groups:
+        - { get_resource: benchop_cluster }
+      networks:
+        - port: { get_resource: worker4_port }
+      user_data: |
+        #!/bin/sh
+        echo "Hello, World!"
+        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDeMYrGrjWNkiP8DHv438IAZPS5t1/NssLnYr4MC6aBui5hAWgqHndTomBwJcR9V4dT27wOrrFFI7RSq/g/zyhUcJ+IT2jRXJ0R5/S+hQ8ELLJEQA7HO2ZMVQSeP2T7VJoypZowB/IhdMmbGjjObLGpT88tpZyl4OL1Ofx1xkNFcjQmaU/zkl0BAEVXocQ/I7CeVloqPQ8bjcV2R1ITvaA4az10t/TqOn58oA72/nuCsih/PPLGU6UqYjcgzRGaW0qJ7SwCFZndlU7TL/aC08psE2etAWAAsSlSich5qN6PxuigmzcKMvqAY35cG/tUhswdOsTpdvy5LSN46ijU161Z" >> /home/ubuntu/.ssh/authorized_keys
+        apt-get update -y
+        apt-get upgrade -y
+      user_data_format: RAW
 
+   worker5:
+    type: OS::Nova::Server
+    properties:
+      image: { get_param: image }
+      flavor: { get_param: flavor }
+      key_name: { get_param: key }
+      security_groups:
+        - { get_resource: benchop_cluster }
+      networks:
+        - port: { get_resource: worker5_port }         
+      user_data: |
+        #!/bin/sh
+        echo "Hello, World!"
+        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDeMYrGrjWNkiP8DHv438IAZPS5t1/NssLnYr4MC6aBui5hAWgqHndTomBwJcR9V4dT27wOrrFFI7RSq/g/zyhUcJ+IT2jRXJ0R5/S+hQ8ELLJEQA7HO2ZMVQSeP2T7VJoypZowB/IhdMmbGjjObLGpT88tpZyl4OL1Ofx1xkNFcjQmaU/zkl0BAEVXocQ/I7CeVloqPQ8bjcV2R1ITvaA4az10t/TqOn58oA72/nuCsih/PPLGU6UqYjcgzRGaW0qJ7SwCFZndlU7TL/aC08psE2etAWAAsSlSich5qN6PxuigmzcKMvqAY35cG/tUhswdOsTpdvy5LSN46ijU161Z" >> /home/ubuntu/.ssh/authorized_keys
+        apt-add-repository -y ppa:ansible/ansible
+        apt-get update -y
+        apt-get upgrade -y
+        apt-get install -y ansible
+      user_data_format: RAW
+
+   worker6:
+    type: OS::Nova::Server
+    properties:
+      image: { get_param: image }
+      flavor: { get_param: flavor }
+      key_name: { get_param: key }
+      security_groups:
+        - { get_resource: benchop_cluster }
+      networks:
+        - port: { get_resource: worker6_port }
+      user_data: |
+        #!/bin/sh
+        echo "Hello, World!"
+        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDeMYrGrjWNkiP8DHv438IAZPS5t1/NssLnYr4MC6aBui5hAWgqHndTomBwJcR9V4dT27wOrrFFI7RSq/g/zyhUcJ+IT2jRXJ0R5/S+hQ8ELLJEQA7HO2ZMVQSeP2T7VJoypZowB/IhdMmbGjjObLGpT88tpZyl4OL1Ofx1xkNFcjQmaU/zkl0BAEVXocQ/I7CeVloqPQ8bjcV2R1ITvaA4az10t/TqOn58oA72/nuCsih/PPLGU6UqYjcgzRGaW0qJ7SwCFZndlU7TL/aC08psE2etAWAAsSlSich5qN6PxuigmzcKMvqAY35cG/tUhswdOsTpdvy5LSN46ijU161Z" >> /home/ubuntu/.ssh/authorized_keys
+        apt-get update -y
+        apt-get upgrade -y
+      user_data_format: RAW
+  
   floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
