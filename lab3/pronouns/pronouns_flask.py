@@ -1,10 +1,4 @@
-#venv
-#FLASK_APP=pronouns_fsk_celery.py flask run --host=0.0.0.0
-#venv
-#celery -A pronouns_flask_celery.celery worker -l info
-#curl -i http://<>:5000/home/ubuntu/workplace
-
-
+#!flask/bin/python
 from flask import Flask,jsonify
 from celery import Celery
 import json
@@ -29,17 +23,17 @@ def make_celery(app):
 
 app = Flask(__name__)
 app.config.update(
-        CELERY_BROKER_URL='amqp://ekomurcu:Bjk1995030507@192.168.2.7:5672/192.168.2.122',
+        CELERY_BROKER_URL='amqp://ekomurcu:Bjk1995030507@192.168.2.122:5672/192.168.2.122',
     CELERY_RESULT_BACKEND='rpc'
 )
 
 
 celery = make_celery(app)
 
-app = Flask(__name__)
+#app = Flask(__name__)
 
 
-@app.task
+@celery.task
 def pronoun_count_per_unique_tweet(filename, counts):
     import re
     import sys
@@ -88,21 +82,22 @@ def pronoun_count_per_unique_tweet(filename, counts):
     #return (counts, count)
     return counts
 
-@app.task
+
+
+@celery.task
 def all_pronoun_counts(directory_path):
     import os
     counts={"han":0,"hon":0, "den":0, "det":0, "denna":0, "denne":0, "hen":0, "count":0 }
     for each in os.listdir(directory_path):
         counts= pronoun_count_per_unique_tweet(directory_path+ each, counts)
-    for pronoun in counts.keys():
-        counts[pronoun]= counts[pronoun]/float(counts["count"])
-
+    #for pronoun in counts.keys():
+    #    counts[pronoun]= counts[pronoun]/float(counts["count"])
     return counts
 
 
-
-@app.route("/home/ubuntu/workplace")
-def home():
+"""
+@app.route("/home/ubuntu/test")
+def test():
 
     counts={"han":0, "hon":0, "den":0, "hen":0, "denne":0, "denna":0, "det":0, "count":0 }
     for filename in os.listdir("/home/ubuntu/Data/"):
@@ -112,6 +107,31 @@ def home():
             counts=v2[1]
 
     print(counts)
-    ^#result = json_results.delay()
+    #result = json_results.delay()
 #    result.wait()
     return result.wait()
+"""
+
+
+@app.route("/home/ubuntu/each", methods = ['GET'])
+def each():
+
+    counts={"han":0, "hon":0, "den":0, "hen":0, "denne":0, "denna":0, "det":0, "count":0 }
+    for filename in os.listdir("/home/ubuntu/Data/"):
+        #result = pronoun_count_per_unique_tweet.delay("/home/ubuntu/Data/"+filename, counts)
+
+        #for v2 in result.collect():
+        #    counts=v2[1]
+        counts= pronoun_count_per_unique_tweet.delay("/home/ubuntu/Data/" + filename, counts)
+    return counts
+
+@app.route("/home/ubuntu/all", methods = ['GET'])
+def all():
+    result=all_pronoun_counts.delay("/home/ubuntu/Data/")
+    return result.wait()
+    #return all_pronoun_counts("/home/ubuntu/Data/")
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', debug=True)
+    #all()
