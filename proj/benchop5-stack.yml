@@ -7,7 +7,7 @@
 
 heat_template_version: 2013-05-23
 
-description: Simple template to deploy a single compute instance
+description:  Benchop-as-a-Service (BaaS) template to deploy a cluster of VMs
 
 # Declare parameters 
 parameters:
@@ -38,10 +38,10 @@ parameters:
 
 # Resource allocation
 resources:
-  celery_cluster:
+  benchop_cluster:
     type: OS::Neutron::SecurityGroup
     properties:
-      name: celery_cluster
+      name: benchop_cluster
       rules:
         - protocol: icmp
         - protocol: tcp
@@ -55,7 +55,7 @@ resources:
     type: OS::Neutron::Subnet
     properties:
       network_id: { get_resource: private_network }
-      cidr: 10.10.10.0/24
+      cidr: 10.12.14.0/24
       dns_nameservers:
         - 130.238.164.6 
         - 130.238.4.133 
@@ -79,13 +79,13 @@ resources:
     properties:
       network: { get_resource: private_network }
       security_groups:
-        - { get_resource: celery_cluster }
+        - { get_resource: benchop_cluster }
   worker2_port:
     type: OS::Neutron::Port
     properties:
       network: { get_resource: private_network }
       security_groups:
-        - { get_resource: celery_cluster }
+        - { get_resource: benchop_cluster }
  
   worker1:
     type: OS::Nova::Server
