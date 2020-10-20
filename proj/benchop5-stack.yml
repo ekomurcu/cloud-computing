@@ -164,10 +164,8 @@ resources:
         #!/bin/sh
         echo "Hello, World!"
         echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDeMYrGrjWNkiP8DHv438IAZPS5t1/NssLnYr4MC6aBui5hAWgqHndTomBwJcR9V4dT27wOrrFFI7RSq/g/zyhUcJ+IT2jRXJ0R5/S+hQ8ELLJEQA7HO2ZMVQSeP2T7VJoypZowB/IhdMmbGjjObLGpT88tpZyl4OL1Ofx1xkNFcjQmaU/zkl0BAEVXocQ/I7CeVloqPQ8bjcV2R1ITvaA4az10t/TqOn58oA72/nuCsih/PPLGU6UqYjcgzRGaW0qJ7SwCFZndlU7TL/aC08psE2etAWAAsSlSich5qN6PxuigmzcKMvqAY35cG/tUhswdOsTpdvy5LSN46ijU161Z" >> /home/ubuntu/.ssh/authorized_keys
-        apt-add-repository -y ppa:ansible/ansible
         apt-get update -y
         apt-get upgrade -y
-        apt-get install -y ansible
       user_data_format: RAW
 
   worker4:
@@ -202,10 +200,8 @@ resources:
         #!/bin/sh
         echo "Hello, World!"
         echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDeMYrGrjWNkiP8DHv438IAZPS5t1/NssLnYr4MC6aBui5hAWgqHndTomBwJcR9V4dT27wOrrFFI7RSq/g/zyhUcJ+IT2jRXJ0R5/S+hQ8ELLJEQA7HO2ZMVQSeP2T7VJoypZowB/IhdMmbGjjObLGpT88tpZyl4OL1Ofx1xkNFcjQmaU/zkl0BAEVXocQ/I7CeVloqPQ8bjcV2R1ITvaA4az10t/TqOn58oA72/nuCsih/PPLGU6UqYjcgzRGaW0qJ7SwCFZndlU7TL/aC08psE2etAWAAsSlSich5qN6PxuigmzcKMvqAY35cG/tUhswdOsTpdvy5LSN46ijU161Z" >> /home/ubuntu/.ssh/authorized_keys
-        apt-add-repository -y ppa:ansible/ansible
         apt-get update -y
         apt-get upgrade -y
-        apt-get install -y ansible
       user_data_format: RAW
 
   worker6:
