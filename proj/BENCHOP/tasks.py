@@ -3,7 +3,7 @@ from oct2py import octave
 from oct2py import Oct2Py
 import os
 
-app = Celery('tasks', backend='rpc://', broker='pyamqp://guest@localhost//')
+app = Celery('tasks', backend='rpc://', broker='amqp://acc5:0000@192.168.2.249:5672/acc5host')
 
 @app.task
 def tupling(x):
