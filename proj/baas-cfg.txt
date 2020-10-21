@@ -1,0 +1,58 @@
+#cloud-config for C3, Kevin Ajamlou
+
+apt_update: true
+apt_upgrade: true
+packages:
+ - python3-pip
+ - python3-dev
+ - build-essential
+byobu_default: system 
+
+write_files:
+  - path: /home/ubuntu/cowsay-app.py
+    content:
+      print('Hello world!')
+  - path: /home/ubuntu/Dockerfile
+    content: |
+      FROM ubuntu
+      RUN apt-get update
+      RUN apt-get -y upgrade 
+      RUN apt-get install -y git
+      RUN apt-get install -y python3-pip
+      RUN pip3 install --upgrade pip
+      RUN pip3 install flask
+      RUN apt-get install -y cowsay
+      RUN git clone https://github.com/TDB-UU/csaas.git 
+      WORKDIR /csaas/cowsay
+      EXPOSE 5000
+      ENV PATH="${PATH}:/usr/games/"
+      CMD ["python3","app.py"]
+            
+  - path: /etc/docker/daemon.json
+    content: |
+      {
+      "mtu": 1400
+      }
+runcmd:
+ - sudo bash
+ - apt-get update
+ - apt-get install python3.6
+ - apt-get install python3-pip
+ - apt-get install rabbitmq-server
+ - pip3 install celery==4.4.0
+ - pip3 install flask
+ - rabbitmqctl add_user acc5 0000
+ - rabbitmqctl add_vhost acc5host
+ - rabbitmqctl set_user_tags acc5 benchop5
+ - rabbitmqctl set_permissions -p acc5host acc5 ".*" ".*" ".*"
+ - apt-get install -y git
+ - apt-add-repository ppa:octave/stable
+ - apt-get install octave
+ - pip3 install oct2py 
+ - git config --global user.email "ekomurcu@sabanciuniv.edu"
+ - git config --global user.name "ekomurcu"
+ - git clone https://github.com/ekomurcu/cloud-computing.git
+ - git clone https://github.com/ajamlou/ACC5_project.git
+ - pip3 install flower
+ - pip3 install celery-flower
+
